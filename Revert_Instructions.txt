@@ -1,0 +1,30 @@
+If you prefer to revert to the old way of asking for the file name. In file "INP2DAT.f90":
+    1- Comment/delete the lines at the beginning between the comments with plus signs (lines 40 to 50).
+    2- Uncomment the lines below (lines 57 to 64).
+
+
+Delete/comment this:
+
+ARG_COUNT = COMMAND_ARGUMENT_COUNT()
+      IF (ARG_COUNT < 1) THEN
+          WRITE(*,*) 'ERROR: Usage: inp2dat <input_file>'
+          STOP
+      ENDIF
+      CALL GET_COMMAND_ARGUMENT(1, ABQ_MODEL_FILE)
+
+! AUTO-APPEND .inp IF MISSING EXTENSION
+      IF (INDEX(ABQ_MODEL_FILE, '.', .TRUE.) == 0) THEN
+          ABQ_MODEL_FILE = TRIM(ABQ_MODEL_FILE) // '.inp'
+      ENDIF
+
+
+Add/Uncomment this:
+
+WRITE(*,*)
+WRITE(*,'(A)', ADVANCE='NO') ' What is the name of the ABAQUS model file (ext not required): '
+READ(*,'(A)') ABQ_MODEL_FILE
+WRITE(*,*)
+INDEX_DECIMAL_PT = INDEX(ABQ_MODEL_FILE, '.', .true. )
+IF (INDEX_DECIMAL_PT == 0) THEN
+    ABQ_MODEL_FILE = TRIM(ABQ_MODEL_FILE) // '.inp'
+ENDIF
