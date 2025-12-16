@@ -74,7 +74,7 @@
 
       IF (IERR == 0) THEN                                  ! Process the data in ABQFIL if no errors opening files
 
-         WRITE(BDF,1)                                      ! Write SOL 101, CEND and BEGIN BULK to the bdf file
+         WRITE(BDF,1)                                      ! Write BEGIN BULK to the bdf file, previously also had SOL 101, CEND 
 
          ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
          ! No more reading the first line outside the loop
@@ -131,7 +131,10 @@ main:    DO
       ENDIF
 
 ! **********************************************************************************************************************************
-    1 FORMAT('SOL 101', /, 'CEND', /, 'BEGIN BULK', /, '$')
+
+!    1 FORMAT('SOL 101', /, 'CEND', /, 'BEGIN BULK', /, '$')
+	
+	1 FORMAT('BEGIN BULK', /, '$')
 
     2 FORMAT(' Processing stopped due to above listed ', I4, ' error(s)')
 

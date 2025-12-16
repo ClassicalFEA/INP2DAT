@@ -1,2 +1,2 @@
 # INP2DAT
-Convert Abaqus format INP to Nastran/MYSTRAN DAT/BDF format
+Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck

@@ -1,5 +1,7 @@
 ! Copyright 2025 ClassicalFEA and Dr. Brian Esp
 ! Original program developed by Dr. Bill Case
+! ##################################################################################################################################
+
       SUBROUTINE OPNERR ( IOCHK, FILNAM )
  
 ! Prints error messages when IOSTAT is not zero on a file OPEN. 

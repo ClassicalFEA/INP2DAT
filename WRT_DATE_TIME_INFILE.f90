@@ -43,8 +43,10 @@
       RETURN
 
 ! **********************************************************************************************************************************
-  150 FORMAT('$ The GRID and elem connection data in this Bulk Data File was created by program:', /,                              &
-             '$ ', A,' on: ',I2,'/',I2,'/',I4,' at ',I2,':',I2,':',I2,'.',I3, /,                                                   &
-             '$ The input file it was generated from was: "', A, '". The output generated was writtn to file "', A, '"')
+  150 FORMAT('$ INP2DAT Version 1.1 (12/16/2025) by Classical FEA and ESP Compositse - Copyright 2025', /,                              &
+			 '$ Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck', /,                                                   &
+             '$ ', /,                                                   &
+			 '$ ', A,' on: ',I2,'/',I2,'/',I4,' at ',I2,':',I2,':',I2,'.',I3, /,                                                   &
+             '$ The input file was: "', A, '". The output file was: "', A, '"')
 
       END SUBROUTINE WRT_DATE_TIME_INFILE

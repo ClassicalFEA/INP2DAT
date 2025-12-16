@@ -1,5 +1,8 @@
 ! Copyright 2025 ClassicalFEA and Dr. Brian Esp
 ! Original program developed by Dr. Bill Case
+! ##################################################################################################################################
+
+      SUBROUTINE READERR ( IOCHK, FILNAM, FILE_UNIT, LAST_REC )
  
 ! Prints error messages when IOSTAT is not zero on a file read. 
  
