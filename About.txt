@@ -1,14 +1,18 @@
+! INP2DAT Version 1.2
 ! Copyright 2025 ClassicalFEA and Dr. Brian Esp
 ! Original program developed by Dr. Bill Case
 
 The original program (ABAQUS_TO_MYSTRAN) was developed by Dr. Bill Case at the request to Dr. Brian Esp in order to add support for a basic conversion tool.
 
 The primary intended use for this tool is:
-- Import a STEP file into Mecway or PrePoMax
-- Create a mesh of solid elements
+- Import a STEP file into Mecway or PrePoMax (or other program that can make an Abaqus/Calculix INP file)
+- Create a mesh of solid elements (typically composed of 4-node or 10-node tetrahedrons.
+- Export the INP file
 - Use INP2DAT to create a Nastran/MYSTRAN deck (BDF/DAT file)
 - Read the DECK into M3D. The M3D preprocessor focuses on "bottom up" FEA (starting with points, curves, surfaces and creatin nodes, line elements, shell elements), but has a limited ability to natively create solid element meshes.
   This tool, along with Mecway and PrePoMax, can bridge that gap.
+
+---------------------------------------------------------------------------------------------------------------
   
 NOTE: The INP file does not contain a property ID (PID), but that is required as part of the Nastran "C" card (element cards). PID's are chosen as follows:
 ELAS1 (2-node) = 1102
@@ -22,3 +26,23 @@ HEXA  (8-node) = 3308
 TETRA (10-node) = 3110
 PENTA (15-node) = 3215
 HEXA  (20-node) = 3320
+
+---------------------------------------------------------------------------------------------------------------
+
+For convenience, a default isotropic material (MAT1 with ID=99) is added and linked to a default property (PSOLID ID=3104 and ID=3110).
+The property card links the ID to the elements.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!! The material is a dummy material and should be changed according once the deck is read into the preprocessor !!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The following lines are added to the deck, but can be removed if desired (in which case a property will need to be created in M3D and assigned to the elements):
+
+	The following material is a dummy material and should be changed accordingly.
+	$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->
+	MAT1          99   1.0+7             0.3
+	$
+	The property cards are for the 4-node tet (ID=3104) and 10-node test (ID=3110). 
+	These were not part of the original INP file.
+	$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->
+	PSOLID      3104      99       0
+	PSOLID      3110      99       0

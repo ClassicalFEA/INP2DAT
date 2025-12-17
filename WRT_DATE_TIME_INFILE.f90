@@ -43,9 +43,9 @@
       RETURN
 
 ! **********************************************************************************************************************************
-  150 FORMAT('$ INP2DAT Version 1.1 (12/16/2025) by Classical FEA and ESP Compositse - Copyright 2025', /,                              &
-			 '$ Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck', /,                                                   &
-             '$ ', /,                                                   &
+  150 FORMAT('$ INP2DAT Version 1.2 (12/17/2025) by Classical FEA and Dr. Brian Esp - Copyright 2025', /,                         &
+			 '$ Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck', /,                       &
+             '$ ', /,                                                                                                              &
 			 '$ ', A,' on: ',I2,'/',I2,'/',I4,' at ',I2,':',I2,':',I2,'.',I3, /,                                                   &
              '$ The input file was: "', A, '". The output file was: "', A, '"')
 

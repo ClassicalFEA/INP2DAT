@@ -132,9 +132,23 @@ main:    DO
 
 ! **********************************************************************************************************************************
 
-!    1 FORMAT('SOL 101', /, 'CEND', /, 'BEGIN BULK', /, '$')
+!   1 FORMAT('SOL 101', /, 'CEND', /, 'BEGIN BULK', /, '$')    'If a default SOL 101 is desired
 	
-	1 FORMAT('BEGIN BULK', /, '$')
+!	1 FORMAT('BEGIN BULK', /, '$')  !No PSOLID or MAT1 entries
+
+!   The following code 	creates default PSOLID and MAT1 entries
+	1 FORMAT('$', /, 'BEGIN BULK', /, '$' ,/,          &
+			'$The following material is a dummy material and should be changed accordingly.', /,   &
+			'$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->', /,   &
+			'MAT1          99   1.0+7             0.3', /,   &
+			'$', /,   &
+			'$The property cards are for the 4-node tet (ID=3104) and 10-node test (ID=3110). ', /,   &
+			'$These were not part of the original INP file.', /,   &
+			'$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->', /,   &
+			'PSOLID      3104      99       0', /,   &
+			'PSOLID      3110      99       0', /,   &
+			'$', /,   &
+			'$'	)
 
     2 FORMAT(' Processing stopped due to above listed ', I4, ' error(s)')
 

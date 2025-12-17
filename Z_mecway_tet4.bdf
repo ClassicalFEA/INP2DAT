@@ -1,9 +1,21 @@
-$ INP2DAT Version 1.1 (12/16/2025) by Classical FEA and ESP Compositse - Copyright 2025
+$ INP2DAT Version 1.2 (12/17/2025) by Classical FEA and Dr. Brian Esp - Copyright 2025
 $ Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck
 $ 
-$ INP2DAT on: 12/16/2025 at 15:28:16.993
+$ INP2DAT on: 12/16/2025 at 21:26:10.387
 $ The input file was: "Z_mecway_tet4.inp". The output file was: "Z_mecway_tet4.bdf"
+$
 BEGIN BULK
+$
+$The following material is a dummy material and should be changed accordingly.
+$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->
+MAT1          99   1.0+7             0.3
+$
+$The property cards are for the 4-node tet (ID=3104) and 10-node test (ID=3110). 
+$These were not part of the original INP file.
+$--1---><--2---><--3---><--4---><--5---><--6---><--7---><--8---><--9---><--10-->
+PSOLID      3104      99       0
+PSOLID      3110      99       0
+$
 $
 GRID,        1, , -5.080000E-02,  7.620000E-02, -2.540000E-02,,
 GRID,        2, ,  0.000000E+00,  7.620000E-02, -2.540000E-02,,
