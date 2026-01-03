@@ -1,4 +1,4 @@
-! Copyright 2025 ClassicalFEA and Dr. Brian Esp
+! Copyright 2026 ClassicalFEA and Dr. Brian Esp
 ! Original program developed by Dr. Bill Case
 ! ##################################################################################################################################
  
@@ -43,7 +43,8 @@
       RETURN
 
 ! **********************************************************************************************************************************
-  150 FORMAT('$ INP2DAT Version 1.2 (12/17/2025) by Classical FEA and Dr. Brian Esp - Copyright 2025', /,                         &
+  150 FORMAT('$ INP2DAT Version 1.5 (1/1/2026) by Classical FEA and Dr. Brian Esp - Copyright 2026', /,                            &
+			 '$ https://github.com/ClassicalFEA/', /,                       &
 			 '$ Convert Abaqus/CalculiX INP file (nodes and elements) to a Nastran/MYSTRAN DAT/BDF deck', /,                       &
              '$ ', /,                                                                                                              &
 			 '$ ', A,' on: ',I2,'/',I2,'/',I4,' at ',I2,':',I2,':',I2,'.',I3, /,                                                   &

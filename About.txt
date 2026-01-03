@@ -1,12 +1,12 @@
-! INP2DAT Version 1.2
-! Copyright 2025 ClassicalFEA and Dr. Brian Esp
+! INP2DAT Version 1.5
+! Copyright 2026 ClassicalFEA and Dr. Brian Esp
 ! Original program developed by Dr. Bill Case
 
 The original program (ABAQUS_TO_MYSTRAN) was developed by Dr. Bill Case at the request to Dr. Brian Esp in order to add support for a basic conversion tool.
 
 The primary intended use for this tool is:
 - Import a STEP file into Mecway or PrePoMax (or other program that can make an Abaqus/Calculix INP file)
-- Create a mesh of solid elements (typically composed of 4-node or 10-node tetrahedrons.
+- Create a mesh of solid elements (typically composed of 4-node or 10-node tetrahedrons).
 - Export the INP file
 - Use INP2DAT to create a Nastran/MYSTRAN deck (BDF/DAT file)
 - Read the DECK into M3D. The M3D preprocessor focuses on "bottom up" FEA (starting with points, curves, surfaces and creatin nodes, line elements, shell elements), but has a limited ability to natively create solid element meshes.
@@ -29,7 +29,16 @@ HEXA  (20-node) = 3320
 
 ---------------------------------------------------------------------------------------------------------------
 
-For convenience, a default isotropic material (MAT1 with ID=99) is added and linked to a default property (PSOLID ID=3104 and ID=3110).
+INP2DAT may be run with 3 options (-basic, -prop, -propmat)
+
+- For the "-basic" option ("inp2dat -basic" in a CMD window), there are not PSOLID entries and no MAT1 entry.
+- For the "-prop" option ("inp2dat -prop" in a CMD window), PSOLID entries and added for the 4-node tet and 10-node tet, but there is no MAT1 entry.
+- For the "-propmat" option ("inp2dat -propmat" or just "inp2dat" in a CMD window), both PSOLID entries are added and a dummy MAT1 entry is added. This is the default (see below).
+
+---------------------------------------------------------------------------------------------------------------
+
+For convenience, the default "inp2dat" command or "inp2dat -propmat",a default isotropic material (MAT1 with ID=99)
+is added to the deck and linked to a default property entry (PSOLID ID=3104 and ID=3110).
 The property card links the ID to the elements.
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!! The material is a dummy material and should be changed according once the deck is read into the preprocessor !!!!!!

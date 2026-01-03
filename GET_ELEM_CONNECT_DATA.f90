@@ -31,11 +31,12 @@
 !     (c) Beams are output as MYSTRAN CBEAM elements. The v vector info is left blank
 
 
-      SUBROUTINE GET_ELEM_CONNECT_DATA ( CHAR_LINE, BDF, ABQ, NELEM )
+      SUBROUTINE GET_ELEM_CONNECT_DATA ( CHAR_LINE, BDF, ABQ, NELEM, EOF_FLAG )
 
       INTEGER, PARAMETER              :: NCHARS  =  7      ! the number of characters in array  ELTYPE
       INTEGER, PARAMETER              :: NEDATA  = 21      ! The dimensioned size of array EDATA
 
+      
       CHARACTER(LEN=*), INTENT(INOUT) :: CHAR_LINE         ! Input character string foer *ELEMENT ABAQUS input file entry
       !++++
       ! This line appears to be unused in the code
@@ -43,7 +44,7 @@
       !++++
       CHARACTER(LEN=LEN(CHAR_LINE))   :: STRING1, STRING2  ! Portion of CHAR_LINE 
       CHARACTER(LEN=NCHARS)           :: ELTYPE            ! ABAQUS element type (C3D8, etc)
-
+      
       INTEGER, INTENT(IN)             :: ABQ               ! File number for writing the MYSTRAN bdf data
       INTEGER, INTENT(IN)             :: BDF               ! File number for MYSTRAN output bdf file
       INTEGER, INTENT(INOUT)          :: NELEM             ! Count of the NUMBER OF element entries read from ABQFFIL and converted
@@ -52,22 +53,29 @@
       INTEGER                         :: I                 ! Loop index
       INTEGER                         :: I1, I2            ! Positions in CHAR_LINE as determined by INTRINSIC fcn INDEX
       INTEGER                         :: IERR              ! Error count
-                                                           ! line in ABAQUS input file
+      INTEGER                         :: IOCHK             ! IOSTAT error number when reading a file (ADDED)
+      ! line in ABAQUS input file
+      
+      ! +++ CHANGE: Added EOF flag to indicate end of file reached to the main program
+      LOGICAL, INTENT(OUT)            :: EOF_FLAG          ! Flag to indicate end of file reached
+
       INTRINSIC INDEX
 
 ! **********************************************************************************************************************************
       IERR = 0
       UNT  = BDF                                           ! BDF is where the output goes. However, if we want to debug we can set
 !                                                            UNT = 6 and output will go to stdout (the console).
-
+      EOF_FLAG = .FALSE.                                   ! Initialize EOF flag to false
       ! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       ! Transform the input string to upper case for case insensitive comparison
       CALL TO_UPPER(CHAR_LINE)
       ! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
       ! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      ! Some file end with 'END STEP' and some with '*END STEP'. This way we catch both cases
-eltyp:DO WHILE ((CHAR_LINE(1:9) /= '*END STEP') .OR. (CHAR_LINE(1:8) /= 'END STEP') )              ! If we get this it is the end of the ABAQUS inp file
+      ! Some file end with 'END STEP' and some with '*END STEP'. 
+      ! Files can also end without either
+
+eltyp:DO WHILE ((CHAR_LINE(1:9) /= '*END STEP') .AND. (CHAR_LINE(1:8) /= 'END STEP'))              ! If we get this it is the end of the ABAQUS inp file
 
          IF (CHAR_LINE(1:8) == '*ELEMENT') THEN
             I1 = INDEX(CHAR_LINE, '=')                     ! ERROR: must be "=" sign follwing keyword 
@@ -107,7 +115,15 @@ eltyp:DO WHILE ((CHAR_LINE(1:9) /= '*END STEP') .OR. (CHAR_LINE(1:8) /= 'END STE
                EDATA(I) = 0
             ENDDO
 
-            READ(ABQ,'(A)') CHAR_LINE                      ! Begin searching for the element type to proccess
+            ! +++ CHANGE: Added IOSTAT to handle EOF gracefully without runtime error
+            READ(ABQ,'(A)', IOSTAT=IOCHK) CHAR_LINE        ! Begin searching for the element type to proccess
+            IF (IOCHK /= 0) THEN
+                  IF (IOCHK < 0) THEN                      ! EOF is expected and not an error
+                       EOF_FLAG = .TRUE.
+                  ENDIF 
+               EXIT eltyp                     ! Exit on EOF or read error (ADDED)
+            ENDIF
+               ! +++ END CHANGE
             IF (CHAR_LINE(1:1) == '*') CYCLE eltyp
 
             IF (ELTYPE(1:NCHARS) == 'SPRINGA') THEN        ! 1D  2 node ELAS1 elem. Use 1102 as prop ID 

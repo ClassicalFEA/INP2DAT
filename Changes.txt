@@ -1,0 +1,36 @@
+CHANGES MADE TO INP2DAT v1.2
+==============================
+
+FILES MODIFIED:
+1. INP2DAT.f90
+2. GET_ELEM_CONNECT_DATA.f90
+
+CHANGES:
+
+A) EOF HANDLING (INP2DAT.f90, lines ~87-97)
+   - Distinguishes EOF (IOCHK < 0) from read errors (IOCHK > 0)
+   - EOF exits cleanly without error flag
+   - ENDDATA always written to output file
+   
+   REVERT: Replace lines 83-93 with old code (commented at lines 100-104)
+
+B) EOF HANDLING (GET_ELEM_CONNECT_DATA.f90)
+   - Line ~55: Added IOCHK variable declaration
+   - Line ~112: Added IOSTAT=IOCHK to READ statement and exit on EOF
+   
+   REVERT: 
+   - Remove IOCHK declaration
+   - Change: READ(ABQ,'(A)', IOSTAT=IOCHK) CHAR_LINE
+     To:     READ(ABQ,'(A)') CHAR_LINE
+   - Remove: IF (IOCHK /= 0) EXIT eltyp
+
+C) OUTPUT EXTENSION (INP2DAT.f90, line ~66)
+   - Changed from .bdf to .dat
+   
+   REVERT: Change 'dat' back to 'bdf' in line:
+   MYSTRAN_BDF_FILE = ABQ_MODEL_FILE(1:INDEX_DECIMAL_PT) // 'dat'
+
+BEHAVIOR:
+- Output file extension is now .dat instead of .bdf
+- Program handles files ending without terminator.
+- ENDDATA guaranteed in all output files

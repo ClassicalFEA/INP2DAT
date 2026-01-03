@@ -1,0 +1,30 @@
+INP2DAT CHANGES - Command-Line Flags
+=====================================
+
+SUMMARY:
+Added command-line flag support to control output format headers:
+  - Usage: inp2dat [-basic|-prop|-propmat] <input_file>
+  - Flags: -basic (format 101), -prop (format 102), -propmat (format 103)
+  - Default: -propmat format when no flag specified
+
+MODIFIED FILES:
+  - Code/INP2DAT.f90
+
+CHANGES IN INP2DAT.f90:
+  1. Added variables: FORMAT_OPTION, ARG_STR (lines ~35-38)
+  2. Modified argument parsing to accept optional flags (lines ~52-90)
+  3. Replaced single WRITE(BDF,101) with conditional format selection (lines ~133-145)
+
+REVERT INSTRUCTIONS:
+  (Changes are indicated in the code with comments starting with "Change v3") 
+  1. Remove the added variables (lines ~35-38)
+  2. Remove/Comment lines 52 to 90
+  3. Uncomment lines 91 to 95
+  4. Remove/Comment lines 133 to 145
+  5. Uncomment line 149 (to add the default/propmat header)
+
+EXPAND FLAGS:
+  (More specific instructions are present in the code as comments)
+  1. Add the format text with a distinct label (next value recommended)
+  2. Add a condition to check for this new flag and assign an appropiate FORMAT_OPTION value
+  3. Check for said FORMAT_OPTION and write the corresponding FORMAT
